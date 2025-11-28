@@ -1,11 +1,11 @@
-// import { Validator } from "mongoose";
-
-import { ValidateFn } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export type Plan = "free" | "basic" | "premium";
 export type SubscriptionStatus = "active" | "cancelled" | "pending" | "expired";
 
 export interface ISubscription extends Document {
+  name: string;
+  user: Types.ObjectId | string;
   email: string;
   plan: Plan;
   price: number;
@@ -15,6 +15,7 @@ export interface ISubscription extends Document {
   paymentMethod: "credit_card" | "paypal" | "bank_transfer";
   status: SubscriptionStatus;
   startDate: Date;
+  renewalDate: Date;
   endDate: Date | null;
   subscriptionId: string;
   metadata: Record<string, unknown>;

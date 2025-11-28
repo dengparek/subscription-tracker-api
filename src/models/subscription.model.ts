@@ -5,11 +5,18 @@ import { ISubscription } from "../interfaces/tsInterface";
  */
 const subscriptionSchema = new Schema<ISubscription>(
   {
-    email: {
+    name: {
       type: String,
-      required: true,
+      required: [true, "Name is required"],
+      minLength: [2, "Name must be at least 2 characters"],
+      maxLength: [100, "Name must be at most 100 characters"],
       trim: true,
-      lowercase: true,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
     },
     plan: {
       type: String,
@@ -56,10 +63,21 @@ const subscriptionSchema = new Schema<ISubscription>(
         validator: function (this: ISubscription, value: Date) {
           return !this.endDate || value < this.endDate;
         },
-
         message: "Start date must be earlier than end date",
       } as any,
     },
+
+    renewalDate: {
+      type: Date,
+      default: () => new Date(),
+      validate: {
+        validator: function (this: ISubscription, value: Date) {
+          return value > this.startDate;
+        },
+        message: "Renewal date must be later than start date",
+      } as any,
+    },
+
     endDate: {
       type: Date,
       default: null,
