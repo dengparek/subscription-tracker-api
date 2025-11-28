@@ -17,9 +17,34 @@ const subscriptionSchema = new Schema<ISubscription>(
       default: "free",
       required: true,
     },
+    price: {
+      type: Number,
+      required: [true, "Price is required"],
+      min: [0, "Price must be greater than or equal to 0"],
+    },
+    currency: {
+      type: String,
+      enum: ["USD", "EUR", "GBP"],
+      default: "USD",
+    },
+    frequency: {
+      type: String,
+      enum: ["monthly", "yearly"],
+    },
+    category: {
+      type: String,
+      enum: ["sports", "news", "entertainment", "education", "technology"],
+      required: true,
+    },
+    paymentMethod: {
+      type: String,
+      enum: ["credit_card", "paypal", "bank_transfer"],
+      required: true,
+      trim: true,
+    },
     status: {
       type: String,
-      enum: ["active", "cancelled", "pending"],
+      enum: ["active", "cancelled", "pending", "expired"],
       default: "pending",
       required: true,
     },
@@ -27,6 +52,13 @@ const subscriptionSchema = new Schema<ISubscription>(
       type: Date,
       default: () => new Date(),
       required: true,
+      validate: {
+        validator: function (this: ISubscription, value: Date) {
+          return !this.endDate || value < this.endDate;
+        },
+
+        message: "Start date must be earlier than end date",
+      } as any,
     },
     endDate: {
       type: Date,

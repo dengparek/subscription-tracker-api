@@ -1,14 +1,23 @@
+// import { Validator } from "mongoose";
+
+import { ValidateFn } from "mongoose";
+
 export type Plan = "free" | "basic" | "premium";
-export type SubscriptionStatus = "active" | "cancelled" | "pending";
+export type SubscriptionStatus = "active" | "cancelled" | "pending" | "expired";
 
 export interface ISubscription extends Document {
   email: string;
   plan: Plan;
+  price: number;
+  frequency: "monthly" | "yearly";
+  category: "sports" | "news" | "entertainment" | "education" | "technology";
+  currency: "USD" | "EUR" | "GBP";
+  paymentMethod: "credit_card" | "paypal" | "bank_transfer";
   status: SubscriptionStatus;
   startDate: Date;
-  endDate?: Date | null;
-  subscriptionId?: string;
-  metadata?: Record<string, unknown>;
+  endDate: Date | null;
+  subscriptionId: string;
+  metadata: Record<string, unknown>;
   // convenience helpers (optional)
   isActive(): boolean;
 }
