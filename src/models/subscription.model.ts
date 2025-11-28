@@ -1,5 +1,6 @@
 import { Schema, model, Document, Model } from "mongoose";
 import { ISubscription } from "../interfaces/tsInterface";
+
 /**
  * Mongoose schema for subscriptions
  */
@@ -114,3 +115,24 @@ export const Subscription: Model<ISubscription> = model<ISubscription>(
   subscriptionSchema
 );
 export default Subscription;
+
+// auto-calculate renewalDateif missing  before saving
+
+subscriptionSchema.pre<ISubscription>("save", function (next: any) {
+  if (!this.renewalDate) {
+    const renewalPeriods = {
+      monthly: 30,
+      yearly: 365 | 366,
+    };
+    this.renewalDate = new Date(this.startDate);
+    this.renewalDate.setDate(
+      this.renewalDate.getDate() + renewalPeriods[this.frequency]
+    );
+  }
+
+  // auto-update status to expired if endDate has passed
+  if (this.renewalDate < new Date()) {
+    this.status = "expired";
+  }
+  next();
+});

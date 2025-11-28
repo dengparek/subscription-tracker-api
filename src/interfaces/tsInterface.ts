@@ -1,3 +1,4 @@
+import { NextFunction } from "express";
 import { Document, Types } from "mongoose";
 
 export type Plan = "free" | "basic" | "premium";
@@ -21,6 +22,7 @@ export interface ISubscription extends Document {
   metadata: Record<string, unknown>;
   // convenience helpers (optional)
   isActive(): boolean;
+  next: NextFunction;
 }
 
 export type UserRole = "user" | "admin" | "superadmin";
