@@ -27,11 +27,3 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/subscriptions", subscriptionRouter);
 
 app.use(errorMiddleware);
-
-app.get("/", async (req: Request, res: Response) => {
-  try {
-    const fetch = await axios.get(
-      "https://www.theguardian.com/environment/climate-crisis"
-    );
-  } catch (e: any) {}
-});
