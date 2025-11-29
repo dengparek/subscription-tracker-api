@@ -1,6 +1,5 @@
 import * as dotenv from "dotenv";
 import path from "path";
-import jwt from "jsonwebtoken";
 
 const envFile =
   process.env.NODE_ENV === "production"
@@ -16,5 +15,8 @@ export const MONGO_URI = process.env.MONGO_URI;
 export const JWT_SECRET = process.env.JWT_SECRET;
 
 export const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "1d";
+
+export const ARCJET_KEY = process.env.ARCJET_KEY;
+export const ARCJET_ENV = process.env.ARCJET_ENV;
 
 console.log(`Loaded ${envFile} environment`);

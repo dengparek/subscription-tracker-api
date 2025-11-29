@@ -4,7 +4,7 @@ import { getAllUsers, getSingleUser } from "../controllers/user.controller";
 import { Request, Response } from "express";
 import { Authorise } from "../middlewares/auth.middleware";
 
-userRouter.get("/", getAllUsers);
+userRouter.get("/", Authorise, getAllUsers);
 
 userRouter.get("/:id", Authorise, getSingleUser);
 

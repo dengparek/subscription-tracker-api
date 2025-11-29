@@ -9,6 +9,7 @@ import authRouter from "./routes/auth.routes";
 import subscriptionRouter from "./routes/subscription.routes";
 
 import errorMiddleware from "./middlewares/error.middleware";
+import { arcjetMiddleware } from "./middlewares/arcjet.middleware";
 
 export const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(cookieParser());
+app.use(arcjetMiddleware);
 
 app.use("/api/v1/users", userRouter);
 
