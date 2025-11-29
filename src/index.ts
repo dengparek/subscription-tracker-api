@@ -3,22 +3,26 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
 import { Request, Response } from "express";
 import userRouter from "./routes/user.routes";
 import authRouter from "./routes/auth.routes";
 import subscriptionRouter from "./routes/subscription.routes";
-// import * as cheerio from "cheerio";
 
-dotenv.config({ path: "./.env.development.local" });
+import errorMiddleware from "./middlewares/error.middleware";
 
-const app = express();
+// dotenv.config({ path: "./.env.development.local" });
+
+export const app = express();
 
 const articles: { title: string; url: string }[] = [];
 
 // middlewares
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+app.use(cookieParser());
 
 app.use("/api/v1/users", userRouter);
 
@@ -26,15 +30,7 @@ app.use("/api/v1/auth", authRouter);
 
 app.use("/api/v1/subscriptions", subscriptionRouter);
 
-const user = {
-  name: "Parek",
-  age: 25,
-  city: "New York",
-};
-app.get("/user", (req: Request, res: Response) => {
-  console.log("Hello World");
-  res.json(user);
-});
+app.use(errorMiddleware);
 
 app.get("/news", (req: Request, res: Response) => {
   axios
@@ -54,38 +50,6 @@ app.get("/news", (req: Request, res: Response) => {
     });
 });
 
-// app.get("/newspaper", async (req: Request, res: Response) => {
-//   try {
-//     const browser = await puppeteer.launch();
-//     const page = await browser.newPage();
-
-//     await page.goto("https://www.theguardian.com/environment/climate-crisis", {
-//       waitUntil: "networkidle2", // wait for JS-rendered data
-//     });
-
-//     const articles = await page.evaluate(() => {
-//       const results: { title: string; url: string }[] = [];
-
-//       document.querySelectorAll("a").forEach((link) => {
-//         const text = link.textContent?.toLowerCase() || "";
-//         if (text.includes("climate")) {
-//           results.push({
-//             title: link.textContent?.trim() || "",
-//             url: link.href,
-//           });
-//         }
-//       });
-
-//       return results;
-//     });
-
-//     await browser.close();
-//     res.json(articles);
-//   } catch (e) {
-//     res.status(500).json({ error: "Error scraping news" });
-//   }
-// });
-
 app.get("/", async (req: Request, res: Response) => {
   try {
     const fetch = await axios.get(
@@ -94,7 +58,7 @@ app.get("/", async (req: Request, res: Response) => {
   } catch (e: any) {}
 });
 
-const port = process.env.PORT || 8080;
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+// const port = process.env.PORT || 8080;
+// app.listen(port, "0.0.0.0", () => {
+//   console.log(`Server is running on http://localhost:${port}`);
+// });

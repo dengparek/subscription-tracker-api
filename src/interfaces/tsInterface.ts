@@ -4,6 +4,14 @@ import { Document, Types } from "mongoose";
 export type Plan = "free" | "basic" | "premium";
 export type SubscriptionStatus = "active" | "cancelled" | "pending" | "expired";
 
+declare global {
+  namespace Express {
+    interface Request {
+      user?: IUser;
+    }
+  }
+}
+
 export interface ISubscription extends Document {
   name: string;
   user: Types.ObjectId | string;
@@ -30,7 +38,7 @@ export type UserStatus = "active" | "inactive" | "pending" | "banned";
 
 export interface IUser extends Document {
   email: string;
-  passwordHash: string;
+  password: string;
   roles: UserRole[];
   status: UserStatus;
   name: string;
@@ -44,4 +52,19 @@ export interface IUser extends Document {
   isActive(): boolean;
   canAccessPlan(plan: Plan): boolean;
   validatePassword(password: string): Promise<boolean>;
+}
+
+export default class AppError extends Error {
+  statusCode: number;
+  isOperational: boolean;
+
+  constructor(message: string, statusCode = 500, isOperational = true) {
+    super(message);
+    this.statusCode = statusCode;
+    this.isOperational = isOperational;
+
+    // Restore prototype chain for TS/Node env
+    Object.setPrototypeOf(this, new.target.prototype);
+    Error.captureStackTrace(this);
+  }
 }
