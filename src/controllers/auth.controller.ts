@@ -32,6 +32,7 @@ export const SignUp = async (
           name,
           email,
           password: hashedPassword,
+          role: req.body.role,
         },
       ],
       { session }
@@ -99,7 +100,6 @@ export const Login = async (
     });
   } catch (error) {
     next(error);
-    // next(new AppError("Something went wrong"));
   }
 };
 

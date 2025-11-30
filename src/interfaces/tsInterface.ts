@@ -33,13 +33,13 @@ export interface ISubscription extends Document {
   next: NextFunction;
 }
 
-export type UserRole = "user" | "admin" | "superadmin";
+export type UserRole = "user" | "admin" | "superAdmin";
 export type UserStatus = "active" | "inactive" | "pending" | "banned";
 
 export interface IUser extends Document {
   email: string;
   password: string;
-  roles: UserRole[];
+  role: UserRole[];
   status: UserStatus;
   name: string;
   createdAt: Date;

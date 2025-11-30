@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { aj } from "../config/arcjet";
 import type { ArcjetAdapterContext } from "@arcjet/node";
+import type { ArcjetNodeRequest } from "@arcjet/node";
 
 export function buildArcjetContext(req: Request): ArcjetAdapterContext {
-  const ctx = {
+  const ctx: ArcjetNodeRequest = {
     getBody: () => req.body,
     getHeader: (name: string) => {
       const val = req.headers[name.toLowerCase()];
@@ -11,9 +12,7 @@ export function buildArcjetContext(req: Request): ArcjetAdapterContext {
       return val?.toString();
     },
     getIp: () =>
-      req.ip ||
-      (req.headers["x-forwarded-for"] as string | undefined) ||
-      req.connection?.remoteAddress,
+      req.ip || (req.headers["x-forwarded-for"] as string | undefined),
     getMethod: () => req.method,
     getPath: () => req.originalUrl || req.url,
     getQuery: () => req.query,
@@ -26,7 +25,7 @@ export function buildArcjetContext(req: Request): ArcjetAdapterContext {
   };
 
   // Assert to ArcjetAdapterContext to satisfy TypeScript if there are tiny differences.
-  return ctx as unknown as ArcjetAdapterContext;
+  // return ctx as unknown as ArcjetAdapterContext;
 }
 
 export const arcjetMiddleware = async (
@@ -36,10 +35,13 @@ export const arcjetMiddleware = async (
 ) => {
   try {
     const ctx = buildArcjetContext(req);
+
     const decision = await aj.protect(ctx, {
+      userId: req.user?._id,
       ip: req.ip,
       method: req.method,
       path: req.originalUrl,
+      headers: req.headers,
       requested: 1,
     });
     // const decision = await aj.protect(req);

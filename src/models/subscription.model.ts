@@ -1,9 +1,8 @@
 import { Schema, model, Document, Model } from "mongoose";
 import { ISubscription } from "../interfaces/tsInterface";
 
-/**
- * Mongoose schema for subscriptions
- */
+//Mongoose schema for subscriptions
+
 const subscriptionSchema = new Schema<ISubscription>(
   {
     name: {
@@ -53,7 +52,7 @@ const subscriptionSchema = new Schema<ISubscription>(
     status: {
       type: String,
       enum: ["active", "cancelled", "pending", "expired"],
-      default: "pending",
+      default: "active",
       required: true,
     },
     startDate: {
@@ -98,18 +97,14 @@ const subscriptionSchema = new Schema<ISubscription>(
   }
 );
 
-/**
- * Instance methods
- */
+// Instance methods
+
 subscriptionSchema.methods.isActive = function (): boolean {
   return (
     this.status === "active" && (!this.endDate || this.endDate > new Date())
   );
 };
 
-/**
- * Model export
- */
 export const Subscription: Model<ISubscription> = model<ISubscription>(
   "Subscription",
   subscriptionSchema
