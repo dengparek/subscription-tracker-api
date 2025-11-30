@@ -4,7 +4,8 @@ import User from "../models/user.model";
 import AppError from "../interfaces/tsInterface";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env";
+import { JWT_SECRET } from "../config/env";
+import BlacklistedToken from "../models/blacklistedToken.model";
 
 export const SignUp = async (
   req: Request,
@@ -103,4 +104,31 @@ export const Login = async (
   }
 };
 
-export const LogOut = (req: Request, res: Response) => {};
+export const LogOut = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(400).json({
+        success: false,
+        message: "No token provided",
+      });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    // Save token to blacklist until it expires
+    await BlacklistedToken.create({ token });
+
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};

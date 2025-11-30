@@ -8,6 +8,19 @@ export const getAllUsers = async (
   next: NextFunction
 ) => {
   try {
+    // Allow only admin or superAdmin
+    if (
+      !req.user ||
+      (!req.user.role?.includes("admin") &&
+        !req.user.role?.includes("superAdmin"))
+    ) {
+      const error = new AppError(
+        "You are not authorized to access user details"
+      );
+      error.statusCode = 403;
+      throw error;
+    }
+
     const users = await User.find();
     if (!users) {
       const error = new AppError("No users found");
@@ -30,6 +43,19 @@ export const getSingleUser = async (
 ) => {
   const id = req.params.id;
   try {
+    // Allow only admin or superAdmin
+    if (
+      !req.user ||
+      (!req.user.role?.includes("admin") &&
+        !req.user.role?.includes("superAdmin"))
+    ) {
+      const error = new AppError(
+        "You are not authorized to access user details"
+      );
+      error.statusCode = 403;
+      throw error;
+    }
+
     const user = await User.findById(id).select("-password");
     if (!user) {
       const error = new AppError("No user found");

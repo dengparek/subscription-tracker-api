@@ -1,8 +1,6 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Model } from "mongoose";
 
 import { IUser } from "../interfaces/tsInterface";
-
-// interface IUserDocument extends IUser, Document {}
 
 // creating user schema
 const userSchema: Schema = new mongoose.Schema(

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { JWT_SECRET } from "../config/env";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model";
+import BlacklistedToken from "../models/blacklistedToken.model";
 
 export const Authorise = async (
   req: Request,
@@ -20,6 +21,13 @@ export const Authorise = async (
 
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const blacklisted = await BlacklistedToken.findOne({ token });
+    if (blacklisted) {
+      return res
+        .status(401)
+        .json({ message: "Session expired. Please login again." });
     }
 
     const decoded = jwt.verify(token, JWT_SECRET!);

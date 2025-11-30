@@ -22,13 +22,11 @@ export const createSubscription = async (
     ...req.body,
     user: (req.user as any)._id,
   });
-  res
-    .status(201)
-    .json({
-      success: true,
-      message: "Subscription Created Successfully",
-      data: subscription,
-    });
+  res.status(201).json({
+    success: true,
+    message: "Subscription Created Successfully",
+    data: subscription,
+  });
   try {
   } catch (error) {
     next(error);
@@ -103,7 +101,55 @@ export const getAllSubscriptions = async (
     }
 
     const subscriptions = await Subscription.find();
-    return res.status(200).json({ success: true, data: subscriptions });
+    return res.status(200).json({
+      success: true,
+      message: "Retrieved all the Subscription",
+      data: subscriptions,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const cancelSubscription = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = (req.user as any)._id;
+    const subscriptionId = req.params.id;
+
+    // 1. Find subscription by ID and ensure it belongs to current user
+    const subscription = await Subscription.findOne({
+      _id: subscriptionId,
+      user: userId,
+    });
+
+    if (!subscription) {
+      return res.status(404).json({
+        success: false,
+        message: "Subscription not found or you are not allowed to delete it",
+      });
+    }
+
+    // 2. If subscription is already cancelled/expired prevent double actions
+    if (["cancelled", "expired"].includes(subscription.status)) {
+      return res.status(400).json({
+        success: false,
+        message: "This subscription has already been cancelled or expired",
+      });
+    }
+
+    // 3. Cancel subscription instead of deleting from DB
+    subscription.status = "cancelled";
+    await subscription.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Subscription successfully cancelled",
+      data: subscription,
+    });
   } catch (error) {
     next(error);
   }
