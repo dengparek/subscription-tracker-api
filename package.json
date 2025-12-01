@@ -7,12 +7,14 @@
     "dev": "ts-node-dev --respawn --transpile-only src/home.ts",
     "dev:prod": "cross-env NODE_ENV=production ts-node-dev --respawn --transpile-only src/home.ts",
     "build": "tsc",
-    "start": "node dist/home.js"
+    "start": "node dist/home.js",
+    "devstart": "node --loader ts-node/esm src/home.ts",
+    "begin": "ts-node-esm src/home.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "@arcjet/inspect": "^1.0.0-beta.15",
     "@arcjet/node": "^1.0.0-beta.15",
@@ -33,8 +35,13 @@
     "puppeteer": "^24.31.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.5",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/mongoose": "^5.11.96",
     "@types/node": "^24.10.1",
     "cross-env": "^10.1.0",
     "nodemon": "^3.1.11",
