@@ -1,7 +1,6 @@
-import { Login, SignUp, LogOut } from "../controllers/auth.controller";
-
-const authRouter = require("express").Router();
-
+import { Login, SignUp, LogOut } from "../controllers/auth.controller.js";
+import Router from "express";
+const authRouter = Router();
 authRouter.post("/login", Login);
 
 authRouter.post("/sign-up", SignUp);

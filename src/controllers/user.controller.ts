@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import User from "../models/user.model";
-import AppError from "../interfaces/tsInterface";
+import User from "../models/user.model.js";
+import AppError from "../interfaces/tsInterface.js";
 
 export const getAllUsers = async (
   req: Request,

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import Subscription from "../models/subscription.model";
-import AppError from "../interfaces/tsInterface";
+import Subscription from "../models/subscription.model.js";
+import AppError from "../interfaces/tsInterface.js";
 
 export const createSubscription = async (
   req: Request,

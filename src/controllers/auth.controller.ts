@@ -1,11 +1,11 @@
 import { Response, Request, NextFunction } from "express";
 import mongoose from "mongoose";
-import User from "../models/user.model";
-import AppError from "../interfaces/tsInterface";
+import User from "../models/user.model.js";
+import AppError from "../interfaces/tsInterface.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../config/env";
-import BlacklistedToken from "../models/blacklistedToken.model";
+import { JWT_SECRET } from "../config/env.js";
+import BlacklistedToken from "../models/blacklistedToken.model.js";
 
 export const SignUp = async (
   req: Request,

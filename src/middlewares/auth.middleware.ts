@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { JWT_SECRET } from "../config/env";
+import { JWT_SECRET } from "../config/env.js";
 import jwt from "jsonwebtoken";
-import User from "../models/user.model";
-import BlacklistedToken from "../models/blacklistedToken.model";
+import User from "../models/user.model.js";
+import BlacklistedToken from "../models/blacklistedToken.model.js";
 
 export const Authorise = async (
   req: Request,

@@ -1,5 +1,5 @@
-import { Schema, model, Document, Model } from "mongoose";
-import { ISubscription } from "../interfaces/tsInterface";
+import { Schema, model, Model } from "mongoose";
+import { ISubscription } from "../interfaces/tsInterface.js";
 
 //Mongoose schema for subscriptions
 
@@ -37,6 +37,7 @@ const subscriptionSchema = new Schema<ISubscription>(
     frequency: {
       type: String,
       enum: ["monthly", "yearly"],
+      required: true,
     },
     category: {
       type: String,
@@ -51,7 +52,7 @@ const subscriptionSchema = new Schema<ISubscription>(
     },
     status: {
       type: String,
-      enum: ["active", "cancelled", "pending", "expired"],
+      enum: ["inactive", "active", "cancelled", "expired"],
       default: "active",
       required: true,
     },
@@ -59,28 +60,15 @@ const subscriptionSchema = new Schema<ISubscription>(
       type: Date,
       default: () => new Date(),
       required: true,
-      validate: {
-        validator: function (this: ISubscription, value: Date) {
-          return !this.endDate || value < this.endDate;
-        },
-        message: "Start date must be earlier than end date",
-      } as any,
     },
 
     renewalDate: {
       type: Date,
       default: () => new Date(),
-      validate: {
-        validator: function (this: ISubscription, value: Date) {
-          return value > this.startDate;
-        },
-        message: "Renewal date must be later than start date",
-      } as any,
     },
 
     endDate: {
       type: Date,
-      default: null,
     },
     subscriptionId: {
       type: String,
@@ -114,20 +102,27 @@ export default Subscription;
 // auto-calculate renewalDateif missing  before saving
 
 subscriptionSchema.pre<ISubscription>("save", function (next: any) {
+  const now = new Date();
+
+  // Auto-calculate renewalDate if missing
   if (!this.renewalDate) {
-    const renewalPeriods = {
-      monthly: 30,
-      yearly: 365 | 366,
-    };
-    this.renewalDate = new Date(this.startDate);
-    this.renewalDate.setDate(
-      this.renewalDate.getDate() + renewalPeriods[this.frequency]
-    );
+    const start = new Date(this.startDate);
+    if (this.frequency === "monthly") {
+      this.renewalDate = new Date(start.setMonth(start.getMonth() + 1));
+    } else if (this.frequency === "yearly") {
+      this.renewalDate = new Date(start.setFullYear(start.getFullYear() + 1));
+    }
   }
 
-  // auto-update status to expired if endDate has passed
-  if (this.renewalDate < new Date()) {
+  // Auto-set endDate if missing
+  if (!this.endDate) {
+    this.endDate = new Date(this.renewalDate);
+  }
+
+  // Auto-expire if renewalDate has passed
+  if (this.renewalDate < now) {
     this.status = "expired";
   }
+
   next();
 });

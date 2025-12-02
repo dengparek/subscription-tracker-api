@@ -1,6 +1,6 @@
-import { connectDB } from "./database/db";
-import { NODE_ENV, PORT } from "./config/env";
-import { app } from "./index";
+import { connectDB } from "./database/db.js";
+import { NODE_ENV, PORT } from "./config/env.js";
+import { app } from "./index.js";
 
 // Start server after connecting to DB
 connectDB()

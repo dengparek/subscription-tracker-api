@@ -1,12 +1,15 @@
-const subscriptionRouter = require("express").Router();
+import Router from "express";
+
 import {
   cancelSubscription,
   createSubscription,
   getAllSubscriptions,
   getSingleSubscription,
   updateSubscription,
-} from "../controllers/subscription.controller";
-import { Authorise } from "../middlewares/auth.middleware";
+} from "../controllers/subscription.controller.js";
+import { Authorise } from "../middlewares/auth.middleware.js";
+
+const subscriptionRouter = Router();
 
 subscriptionRouter.get("/", Authorise, getAllSubscriptions);
 

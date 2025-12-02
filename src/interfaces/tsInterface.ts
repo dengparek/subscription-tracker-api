@@ -2,7 +2,11 @@ import { NextFunction } from "express";
 import { Document, Types } from "mongoose";
 
 export type Plan = "free" | "basic" | "premium";
-export type SubscriptionStatus = "active" | "cancelled" | "pending" | "expired";
+export type SubscriptionStatus =
+  | "inactive"
+  | "active"
+  | "cancelled"
+  | "expired";
 
 declare global {
   namespace Express {

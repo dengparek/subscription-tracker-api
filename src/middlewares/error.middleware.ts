@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import AppError from "../interfaces/tsInterface";
+import AppError from "../interfaces/tsInterface.js";
 
 const errorMiddleware = (
   err: unknown, // can be literally anything
