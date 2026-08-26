@@ -1,15 +1,13 @@
 {
-  "name": "climate_api",
+  "name": "subscription_tracker",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/home.ts",
+    "dev": "node --loader ts-node/esm src/home.ts",
     "dev:prod": "cross-env NODE_ENV=production ts-node-dev --respawn --transpile-only src/home.ts",
     "build": "tsc",
-    "start": "node dist/home.js",
-    "devstart": "node --loader ts-node/esm src/home.ts",
-    "begin": "ts-node-esm src/home.ts"
+    "start": "node dist/home.js"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +17,6 @@
     "@arcjet/inspect": "^1.0.0-beta.15",
     "@arcjet/node": "^1.0.0-beta.15",
     "axios": "^1.13.2",
-    "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "cheerio": "^1.1.2",
     "cookie-parser": "^1.4.7",
@@ -32,7 +29,8 @@
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.0",
     "node-fetch": "^3.3.2",
-    "puppeteer": "^24.31.0"
+    "puppeteer": "^24.31.0",
+    "redis": "^5.9.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
