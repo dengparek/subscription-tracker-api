@@ -10,19 +10,20 @@ import arcjetMiddleware from "./middlewares/arcjetMiddleware.js";
 
 export const app = express();
 
-const articles: { title: string; url: string }[] = [];
-
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(cookieParser());
-app.use(arcjetMiddleware);
 
-app.use(errorMiddleware);
+//api protection
+app.use(arcjetMiddleware);
 
 app.use("/api/v1/users", userRouter);
 
 app.use("/api/v1/auth", authRouter);
 
 app.use("/api/v1/subscriptions", subscriptionRouter);
+
+// Error handling
+app.use(errorMiddleware);
