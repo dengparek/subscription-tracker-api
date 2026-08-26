@@ -9,7 +9,8 @@ export const connectDB = async () => {
 
   try {
     await mongoose.connect(MONGO_URI, {
-      dbName: NODE_ENV === "production" ? "dura_prod" : "dura_dev",
+      dbName:
+        NODE_ENV === "production" ? "sub_tracker__prod" : "sub_tracker__dev",
       autoIndex: true, // recommended for development; turn off in prod if needed
     });
 
