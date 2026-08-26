@@ -42,6 +42,7 @@ npm
 
 ## Project Structure
 
+```
 src/
 ├── config/
 │ └── Environment configuration
@@ -74,7 +75,9 @@ src/
 │ └── Subscription routes
 │
 └── home.ts
-Getting Started
+```
+
+# Getting Started
 
 ## Prerequisites
 
@@ -88,11 +91,11 @@ Access to a MongoDB database
 
 Clone the repository:
 
-git clone https://github.com/duratechss-Ltd/Subscription_Tracker.git
+git clone https://github.com/duratechss-Ltd/subscription-tracker-api.git
 
 Navigate into the project:
 
-cd Subscription_Tracker
+cd subscription_tracker_api
 
 Install dependencies:
 
@@ -118,7 +121,8 @@ ARCJET_ENV=development
 
 Do not commit environment files containing real credentials.
 
-Run in Development
+# Run in Development
+
 npm run dev
 Build the Project
 npm run build
