@@ -7,7 +7,7 @@ connectDB()
   .then(() => {
     app.listen(PORT, () => {
       console.log(
-        `Server started successfully on port:${PORT} in ${NODE_ENV} mode`
+        `Server started successfully on port:${PORT} in ${NODE_ENV} mode`,
       );
 
       console.log(`Server running at port:${PORT} in ${NODE_ENV} mode`);

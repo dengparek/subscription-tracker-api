@@ -91,7 +91,7 @@ Access to a MongoDB database
 
 Clone the repository:
 
-git clone https://github.com/duratechss-Ltd/subscription-tracker-api.git
+git clone https://github.com/dengparek/subscription-tracker-api.git
 
 Navigate into the project:
 
@@ -215,4 +215,4 @@ Self-taught software developer focused on building practical backend and full-st
 
 GitHub:
 
-**\*https://github.com/duratechss-Ltd**
+**\*https://github.com/dengparek**

@@ -25,5 +25,9 @@ app.use("/api/v1/auth", authRouter);
 
 app.use("/api/v1/subscriptions", subscriptionRouter);
 
+app.get("health", (res, req) => {
+  console.log("Okay");
+});
+
 // Error handling
 app.use(errorMiddleware);
