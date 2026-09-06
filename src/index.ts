@@ -7,8 +7,11 @@ import authRouter from "./routes/auth.routes.js";
 import subscriptionRouter from "./routes/subscription.routes.js";
 import errorMiddleware from "./middlewares/error.middleware.js";
 import arcjetMiddleware from "./middlewares/arcjetMiddleware.js";
+import { NODE_ENV, PORT } from "./config/env.js";
+import { connectDB } from "./database/db.js";
 
 export const app = express();
+export default app;
 
 // middlewares
 app.use(express.json());
@@ -31,3 +34,17 @@ app.get("health", (res, req) => {
 
 // Error handling
 app.use(errorMiddleware);
+
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(
+        `Server started successfully on port:${PORT} in ${NODE_ENV} mode`,
+      );
+
+      console.log(`Server running at port:${PORT} in ${NODE_ENV} mode`);
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB: " + err.message);
+  });
