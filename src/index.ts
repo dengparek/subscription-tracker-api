@@ -27,13 +27,15 @@ app.use("/api/v1/auth", authRouter);
 
 app.use("/api/v1/subscriptions", subscriptionRouter);
 
-app.get("health", (res, req) => {
-  console.log("Okay");
-});
-
 // Error handling
 app.use(errorMiddleware);
 
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "API is healthy",
+  });
+});
 connectDB()
   .then(() => {
     app.listen(PORT, () => {
