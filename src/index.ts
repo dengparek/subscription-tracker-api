@@ -11,7 +11,6 @@ import { NODE_ENV, PORT } from "./config/env.js";
 import { connectDB } from "./database/db.js";
 
 export const app = express();
-export default app;
 
 // middlewares
 app.use(express.json());
@@ -48,3 +47,5 @@ connectDB()
   .catch((err) => {
     console.error("Failed to connect to MongoDB: " + err.message);
   });
+
+export default app;
