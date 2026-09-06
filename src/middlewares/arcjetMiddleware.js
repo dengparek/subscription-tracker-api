@@ -12,11 +12,11 @@ const arcjetMiddleware = async (req, res, next) => {
           .json({ Error: "Too Many Requests. Rate Limit Exceeded" });
       }
 
-      if (decision.reason.isBot()) {
-        res.status(403, { "Content-Type": "application/json" }).json({
-          Error: "Bot Detected, access is denied",
-        });
-      }
+      // if (decision.reason.isBot()) {
+      //   res.status(403, { "Content-Type": "application/json" }).json({
+      //     Error: "Bot Detected, access is denied",
+      //   });
+      // }
     } else if (decision.ip.isHosting() || decision.results.some(isSpoofedBot)) {
       res
         .status(403, { "Content-Type": "application/json" })
